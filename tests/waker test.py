@@ -28,7 +28,7 @@ def main():
     act1.send("foo", ("foo 1", 5), delay=2)
     act1.send("hello", "Hello, World!")
 
-    sleep(8)
+    sleep(2)
 
 
 if __name__ == '__main__':

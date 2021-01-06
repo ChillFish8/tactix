@@ -30,11 +30,16 @@ class MyActor(Actor):
 
     @Actor.wrap_coroutine
     async def handle_foo(self, ctx: ActorContext, message):
+        # Like asyncio, using a non-blocking sleep thousands of
+        # tasks can run on a single thread.
         await ctx.sleep(message[1])
         print("done!")
 
     @Actor.listener(name="on_hello")
     def custom_name(self, message):
+        # Now this will block the worker but all other tasks will be 
+        # un-effected as the worker stealer will have re-distributed tasks.
+        sleep(2)
         print(f"Got: {message}")
 
 
@@ -49,4 +54,18 @@ def main():
 if __name__ == '__main__':
     tactix.run(main)
 ```
+
+
+## Building
+
+Obviously because this system is built of the Rust back bone you're going to need
+to install Rust, you will also need `cmake`.
+
+### Using Maturin:
+
+1) `git pull https://github.com/ChillFish8/tactix.git`
+
+2) `maturin develop` or `maturin develop --release`
+
+3) Have fun.
 
