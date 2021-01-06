@@ -20,13 +20,11 @@ class MyActor(Actor):
 
 
 def main():
-    tactix.run_forever()
-
     act1 = MyActor()
     act1.send("foo", ("foo 1", 5), delay=2)
     act1.send("foo", ("foo 1", 5), delay=2)
 
-    sleep(90)
+    sleep(5)
 
 
 if __name__ == '__main__':
