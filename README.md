@@ -38,7 +38,7 @@ class MyActor(Actor):
     @Actor.listener(name="on_hello")
     def custom_name(self, message):
         # Now this will block the worker but all other tasks will be 
-        # un-effected as the worker stealer will have re-distributed tasks.
+        # un-effected as the work stealer will have re-distributed tasks.
         sleep(2)
         print(f"Got: {message}")
 
