@@ -1,5 +1,3 @@
-from time import time
-
 import tactix
 from tactix import Actor, ActorContext
 
@@ -12,23 +10,18 @@ class MyActor(Actor):
     @Actor.listener()
     def on_foo(self, message):
         print(message)
-        # self.handle_foo(message)
+        self.handle_foo(message)
 
     @Actor.wrap_coroutine
     async def handle_foo(self, ctx: ActorContext, message):
-        print(message)
         await ctx.sleep(message[1])
-        self.count += 1
-
-        if self.count >= 100:
-            print(time())
+        print("done!")
 
 
 def main():
     act1 = MyActor()
-    print(time())
-    act1.send("foo", ("foo 1", 5))
-
+    act1.send("foo", ("foo 1", 5), delay=2)
+    act1.send("foo", ("foo 1", 5), delay=2)
     tactix.run_forever()
 
 
