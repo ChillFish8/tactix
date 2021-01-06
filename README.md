@@ -1,5 +1,5 @@
 # Tactix
-A work-stealing actor framework for Python built on Tokio.r.
+A work-stealing actor framework for Python built on Tokio.rs.
 
 The easiest way to understand how Tactix works is think: 
 #### asyncio + threading + actors => tactix
