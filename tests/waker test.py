@@ -18,13 +18,17 @@ class MyActor(Actor):
         await ctx.sleep(message[1])
         print("done!")
 
+    @Actor.listener(name="on_hello")
+    def custom_name(self, message):
+        print(f"Got: {message}")
+
 
 def main():
     act1 = MyActor()
     act1.send("foo", ("foo 1", 5), delay=2)
-    act1.send("foo", ("foo 1", 5), delay=2)
+    act1.send("hello", "Hello, World!")
 
-    sleep(5)
+    sleep(8)
 
 
 if __name__ == '__main__':
