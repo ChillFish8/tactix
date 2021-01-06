@@ -30,7 +30,7 @@ class MyActor(Actor):
 
     @Actor.wrap_coroutine
     async def handle_foo(self, ctx: ActorContext, message):
-        # Like asyncio, using a non-blocking sleep thousands of
+        # Like asyncio, using a non-blocking sleep, thousands of
         # tasks can run on a single thread.
         await ctx.sleep(message[1])
         print("done!")
