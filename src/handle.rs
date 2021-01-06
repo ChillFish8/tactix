@@ -44,14 +44,11 @@ impl Handler {
     }
 
     async fn invoke_cb(cb: Arc<PyObject>, payload: Payload) {
-        println!("calling");
         Python::with_gil(|py| {
-            println!("acquired gil");
             if let Err(e) = cb.call1(py, payload) {
                 println!("{:?}", e);
             }
         });
-        println!("no-deadlocked")
     }
 }
 

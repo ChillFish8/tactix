@@ -6,33 +6,39 @@ mod runtime;
 mod handle;
 
 use pyo3::prelude::*;
-use pyo3::wrap_pyfunction;
 
 use mimalloc::MiMalloc;
-use std::thread;
+use tokio::sync::mpsc::UnboundedSender;
+
+use std::sync::mpsc;
+
 
 #[global_allocator]
 static GLOBAL: MiMalloc = MiMalloc;
 
+
 #[pyclass]
-pub struct TactixRuntime {
-    handle: thread::JoinHandle<()>,
+struct TactixRuntime {
+    stop: UnboundedSender<()>,
+    wait: mpsc::Receiver<()>,
 }
 
 #[pymethods]
 impl TactixRuntime {
     #[new]
     fn new() -> Self {
-        let handle = runtime::start_background();
-        Self { handle }
+        let (stop, wait) = runtime::start_background();
+        Self { stop, wait }
     }
 
-    fn wait(&self) {
-        let _ = self.handle.join();
+    fn wait(&mut self) {
+        if let Err(e) = self.wait.recv() {
+            eprintln!("{:?}", e)
+        }
     }
 
     fn shutdown(&self) {
-        runtime::RUNTIME.shutdown_background();
+        let _ = self.stop.send(());
     }
 }
 
