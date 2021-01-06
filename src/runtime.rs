@@ -1,6 +1,7 @@
 use tokio::runtime::{Builder, Runtime};
 use futures::Future;
 use tokio::task::JoinHandle;
+use std::thread;
 
 
 lazy_static! {
@@ -19,8 +20,10 @@ pub fn spawn<F>(future: F) -> JoinHandle<F::Output>
     RUNTIME.spawn(future)
 }
 
-pub fn run_forever() {
-    let fut = futures::future::pending::<()>();
-    RUNTIME.block_on(fut);
+pub fn start_background() -> thread::JoinHandle<()> {
+    thread::spawn(move || {
+        let fut = futures::future::pending::<()>();
+        RUNTIME.block_on(fut);
+    })
 }
 
