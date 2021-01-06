@@ -11,7 +11,6 @@ class MyActor(Actor):
 
     @Actor.listener()
     def on_foo(self, message):
-        print(message)
         self.handle_foo(message)
 
     @Actor.wrap_coroutine
@@ -31,4 +30,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    tactix.run(main)
